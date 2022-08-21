@@ -1,0 +1,14 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "goldtelepads:block/telepad_xz",
+      "y": 90
+    },
+    "axis=y": {
+      "model": "goldtelepads:block/telepad_y"
+    },
+    "axis=z": {
+      "model": "goldtelepads:block/telepad_xz"
+    }
+  }
+}

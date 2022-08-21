@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "gay.aurum.TelePads.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AccessorLivingEntity",
+    "EntityMixin",
+    "LivingEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
