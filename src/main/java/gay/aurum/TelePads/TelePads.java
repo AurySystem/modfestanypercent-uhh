@@ -22,7 +22,7 @@ public class TelePads implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Gold Telepads");
 
 	public static final Block TelePad = Registry.register(Registry.BLOCK, ID("telepad"),
-			new TelepadBlock(QuiltBlockSettings.of(Material.METAL, MapColor.IRON_GRAY).sounds(BlockSoundGroup.METAL).requiresTool().resistance(1f)  ));
+			new TelepadBlock(QuiltBlockSettings.of(Material.METAL, MapColor.IRON_GRAY).sounds(BlockSoundGroup.METAL).resistance(1f)  ));
 
 	public static final Item TelePadItem = Registry.register(Registry.ITEM, ID("telepad"),
 			new BlockItem(TelePad, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));

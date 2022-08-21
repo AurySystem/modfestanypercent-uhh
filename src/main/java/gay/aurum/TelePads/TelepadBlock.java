@@ -2,11 +2,13 @@ package gay.aurum.TelePads;
 
 import gay.aurum.TelePads.mixin.AccessorLivingEntity;
 import net.minecraft.block.*;
+import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -124,5 +126,9 @@ public class TelepadBlock extends PillarBlock implements JumpingActionInterface 
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
 		return !world.isAir(pos.down());
 	}
-
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		Direction direction = ctx.getSide();
+		return this.getDefaultState().with(AXIS, direction == Direction.DOWN || (direction == Direction.UP ) ? Direction.Axis.Y : ctx.getPlayerFacing().getAxis());
+	}
 }
