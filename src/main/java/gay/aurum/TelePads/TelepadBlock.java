@@ -1,12 +1,8 @@
 package gay.aurum.TelePads;
 
-import gay.aurum.TelePads.mixin.AccessorLivingEntity;
 import net.minecraft.block.*;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +15,7 @@ import net.minecraft.world.WorldView;
 
 public class TelepadBlock extends PillarBlock implements JumpingActionInterface {
 
-	public static final int MAX_DIST = 40;
+	public static final int MAX_DIST = 40; // make this a config when modfest is over
 	public static final VoxelShape SHAPE = Block.createCuboidShape(1.0, 0.0, 1.0, 15.0, 3.0, 15.0);
 
 	public TelepadBlock(Settings settings) {
@@ -94,18 +90,18 @@ public class TelepadBlock extends PillarBlock implements JumpingActionInterface 
 		for (int i = 1; i <= MAX_DIST; i++) {
 			pos.move(dir);
 			if(world.getBlockState(pos).isOf(state.getBlock())){
-				if(world.getBlockState(pos).get(AXIS) == dir.getAxis()) {
+				if(world.getBlockState(pos).get(AXIS) == dir.getAxis()) { //this is just frazzeled design decisions, not a bug, but we'll change it after modfest is over
 					if (entity instanceof PlayerEntity player) {
 						player.teleport(x + (double) pos.getX(), y + (double) pos.getY(), z + (double) pos.getZ());
 					} else {
 						entity.setPosition(x + (double) pos.getX(), y + (double) pos.getY(), z + (double) pos.getZ());
 					}
-					((CoolDownDuck)entity).goldtelepads$setCooldown(12);
+					((CoolDownDuck)entity).goldtelepads$setCooldown(12);// also not a bug but the cooldown feels slightly too long
 					break;
 				}
 			}
 		}
-	}
+	}// we forgot to make it teleport you to max dist if it can't find a pad, well it's not really a bug so it stays in
 
 
 	@Override
@@ -122,13 +118,14 @@ public class TelepadBlock extends PillarBlock implements JumpingActionInterface 
 				: super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
 
+
 	@Override
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		return !world.isAir(pos.down());
+		return hasTopRim(world, pos.down()); //fixed placement bug that let you see the untextured underside
 	}
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		Direction direction = ctx.getSide();
-		return this.getDefaultState().with(AXIS, direction == Direction.DOWN || (direction == Direction.UP ) ? Direction.Axis.Y : ctx.getPlayerFacing().getAxis());
+		return this.getDefaultState().with(AXIS, direction == Direction.DOWN || (direction == Direction.UP ) ? Direction.Axis.Y : ctx.getPlayerFacing().getAxis()); //this is unforantly just obnoxious and not a bug
 	}
 }

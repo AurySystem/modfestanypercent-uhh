@@ -4,7 +4,6 @@
   "package": "gay.aurum.TelePads.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AccessorLivingEntity",
     "EntityMixin",
     "LivingEntityMixin"
   ],
