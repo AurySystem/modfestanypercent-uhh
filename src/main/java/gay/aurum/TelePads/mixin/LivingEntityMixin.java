@@ -24,13 +24,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 	@Inject(method = "jump", at = @At("HEAD"))
 	protected void goldtelepads$jump(CallbackInfo ci) {
 		World world = this.getWorld();
-		if(!world.isClient()){
+		//if(!world.isClient()){
 			Vec3d pos = this.getPos();
 			BlockPos blockpos = new BlockPos(pos);
 			BlockState state = world.getBlockState(blockpos);
 			if(state.getBlock() instanceof JumpingActionInterface jmp){
 				jmp.onJump(world, state, blockpos, ((LivingEntity)(Object)(this)));
 			}
-		}
+		//}
 	}
 }

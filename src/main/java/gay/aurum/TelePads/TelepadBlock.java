@@ -1,6 +1,7 @@
 package gay.aurum.TelePads;
 
 import net.minecraft.block.*;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,16 +25,18 @@ public class TelepadBlock extends PillarBlock implements JumpingActionInterface 
 
 	@Override
 	public void onJump(World world, BlockState state, BlockPos pos, LivingEntity entity) {
-		if(entity instanceof PlayerEntity player ) {
-			Direction dir;
-			Direction.Axis axis = state.get(AXIS);
-				if(player.getHorizontalFacing().getAxis() == axis){
-					dir = player.getHorizontalFacing();
+		if(!world.isClient()){
+			if(entity instanceof PlayerEntity ) {
+				Direction dir;
+				Direction.Axis axis = state.get(AXIS);
+				if(entity.getHorizontalFacing().getAxis() == axis){
+					dir = entity.getHorizontalFacing();
 				}else{
 					dir = Direction.from(axis, Direction.AxisDirection.POSITIVE);
 				}
-			BlockPos.Mutable mutpos = new BlockPos.Mutable(pos.getX(), pos.getY(), pos.getZ());
+				BlockPos.Mutable mutpos = new BlockPos.Mutable(pos.getX(), pos.getY(), pos.getZ());
 				doTeleport(world,mutpos,state, entity, dir);
+			}
 		}
 	}
 
@@ -91,11 +94,11 @@ public class TelepadBlock extends PillarBlock implements JumpingActionInterface 
 			pos.move(dir);
 			if(world.getBlockState(pos).isOf(state.getBlock())){
 				if(world.getBlockState(pos).get(AXIS) == dir.getAxis()) { //this is just frazzeled design decisions, not a bug, but we'll change it after modfest is over
-					if (entity instanceof PlayerEntity player) {
-						player.teleport(x + (double) pos.getX(), y + (double) pos.getY(), z + (double) pos.getZ());
-					} else {
-						entity.setPosition(x + (double) pos.getX(), y + (double) pos.getY(), z + (double) pos.getZ());
-					}
+//					if (entity instanceof PlayerEntity player) {
+						entity.teleport(x + (double) pos.getX(), y + (double) pos.getY(), z + (double) pos.getZ());
+//					} else {
+//						entity.setPosition(x + (double) pos.getX(), y + (double) pos.getY(), z + (double) pos.getZ());
+//					}
 					((CoolDownDuck)entity).goldtelepads$setCooldown(12);// also not a bug but the cooldown feels slightly too long
 					break;
 				}
